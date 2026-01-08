@@ -40,11 +40,11 @@ body {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   background: linear-gradient(160deg, #ffffff 0%, #fafafa 50%, #f5f5f5 100%);
   color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: relative;
   overflow-x: hidden;
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -78,11 +78,14 @@ body::after {
 .page {
   position: relative;
   z-index: 1;
-  width: min(920px, 94vw);
+  width: 100%;
+  max-width: 1100px;
   display: grid;
   gap: clamp(4rem, 8vw, 7rem);
   padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 4vw, 2.5rem) clamp(4rem, 8vw, 6rem);
   animation: fadeInUp 0.8s ease-out;
+  overflow: visible;
+  margin: 0 auto;
 }
 
 
@@ -93,7 +96,9 @@ body::after {
   justify-items: center;
   animation: fadeIn 1s ease-out 0.2s both;
   position: relative;
+  width: 100%;
   max-width: 100%;
+  overflow: visible;
 }
 
 /* Gallery wrapper - contains images with notice card overlaid */
@@ -104,11 +109,19 @@ body::after {
   gap: 4px; /* Tiny gap like the screenshot spine */
   width: 100vw; /* Full viewport width */
   max-width: none; /* Remove any constraint */
-  margin-left: calc(-50vw + 50%); /* Break out of parent container */
-  margin-right: calc(-50vw + 50%);
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   padding: 0;
   overflow: visible; /* Ensure card can overflow if needed */
   isolation: isolate; /* Create new stacking context */
+}
+
+@supports (width: 100dvw) {
+  .hero__gallery {
+    width: 100dvw;
+    margin-left: calc(50% - 50dvw);
+    margin-right: calc(50% - 50dvw);
+  }
 }
 
 .hero__figure {
@@ -137,12 +150,12 @@ body::after {
 
 /* Position the notice card centered over the gallery */
 .hero__notice {
-  position: absolute !important; /* Force absolute positioning */
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 999 !important; /* Very high to ensure it's on top */
-  width: min(620px, 92%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: min(620px, calc(100% - 3rem));
   background: #ffffff;
   padding: clamp(3rem, 5vw, 4.5rem) clamp(2rem, 5vw, 3rem);
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0,0,0,0.05);
@@ -204,57 +217,153 @@ body::after {
 }
 
 @media (max-width: 900px) {
-  .page {
-    padding: 1.5rem 1rem 2rem;
-    gap: 2rem;
+  html, body {
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page {
+    padding: 1.5rem 1.25rem 2rem;
+    gap: 2rem;
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
   }
 
   .hero {
     gap: 1.5rem;
     max-width: 100%;
+    width: 100%;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
   }
 
   .hero__branding {
     width: 100%;
+    max-width: 100vw;
     text-align: center;
+    padding: 0;
+    margin: 0 auto;
   }
 
   .hero__logo {
-    font-size: clamp(2rem, 8vw, 2.8rem);
-    letter-spacing: clamp(0.2rem, 1.2vw, 0.35rem);
+    font-size: clamp(1.6rem, 6.5vw, 2.4rem);
+    letter-spacing: clamp(0.15rem, 0.8vw, 0.28rem);
+    word-break: keep-all;
+    white-space: nowrap;
+    max-width: 90vw;
+    margin: 0 auto;
   }
 
   .hero__tagline {
-    font-size: 0.65rem;
-    letter-spacing: clamp(0.35rem, 1.5vw, 0.5rem);
+    font-size: 0.58rem;
+    letter-spacing: clamp(0.25rem, 1vw, 0.4rem);
+    max-width: 90vw;
+    margin: 0 auto;
   }
 
   .hero__title {
-    font-size: clamp(1.1rem, 5vw, 1.6rem);
-    letter-spacing: clamp(0.1rem, 1vw, 0.15rem);
+    font-size: clamp(0.95rem, 4.2vw, 1.45rem);
+    letter-spacing: clamp(0.06rem, 0.7vw, 0.12rem);
+    padding: 0;
+    line-height: 1.5;
+    max-width: 90vw;
+    margin: 0 auto;
   }
 
   .hero__gallery { 
-    grid-template-columns: 1fr; 
-    gap: 0;
-    width: 100%; /* Revert to 100% on mobile */
-    margin-left: 0; /* Remove negative margin */
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "notice"
+      "left"
+      "right";
+    gap: 10px;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
     margin-right: 0;
+    margin: 0;
+    padding: 0;
   }
-  .hero__figure { height: 250px; }
+
+  .hero__figure:nth-child(1) { grid-area: left; }
+  .hero__figure:nth-child(2) { grid-area: right; }
   
-  /* On mobile, reposition card to be truly centered */
+  .hero__figure { 
+    height: 250px;
+    width: 100%;
+  }
+  
   .hero__notice { 
-    position: fixed !important; /* Use fixed positioning on mobile for true centering */
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    z-index: 999 !important;
-    width: 90vw !important;
-    max-width: 500px;
+    grid-area: notice;
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 100%;
+    max-width: 560px;
+    padding: 2.25rem 1.75rem;
+    margin: 0 auto;
+  }
+
+  .hero__notice-label {
+    font-size: 0.72rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero__contact-link {
+    font-size: clamp(0.95rem, 3.8vw, 1.15rem) !important;
+  }
+
+  .hero__phone {
+    font-size: clamp(1.05rem, 4.2vw, 1.25rem) !important;
+  }
+
+  .hero__address {
+    font-size: 0.78rem;
+    margin-top: 1.75rem;
   }
 }
+
+/* Ensure responsive overrides win the cascade (declared late on purpose). */
+@media (max-width: 900px) {
+  .hero__branding {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    display: grid;
+    justify-items: center;
+  }
+
+  .hero__logo {
+    width: 100%;
+    max-width: 92vw;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__logo {
+    white-space: normal;
+    line-height: 1.05;
+  }
+
+  .hero__logo-light,
+  .hero__logo-bold {
+    display: block;
+  }
+
+  .hero__logo-bold {
+    margin-left: 0;
+  }
+}
+
 
 .hero__branding {
   animation: slideDown 0.6s ease-out 0.3s both;
@@ -303,97 +412,6 @@ body::after {
   line-height: 1.4;
   color: var(--text-secondary);
   animation: fadeIn 0.8s ease-out 0.5s both;
-}
-
-.hero__notice {
-  font-size: clamp(1rem, 2.2vw, 1.35rem);
-  text-transform: uppercase;
-  line-height: 1.75;
-  letter-spacing: clamp(0.18rem, 0.8vw, 0.28rem);
-  color: var(--text-secondary);
-  background: #ffffff;
-  padding: clamp(3rem, 5vw, 4rem) clamp(2.25rem, 5.25vw, 3.25rem);
-  border-radius: 8px;
-  box-shadow: 0 28px 60px rgba(16, 24, 32, 0.08);
-  max-width: 56ch;
-  margin: 0 auto;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  position: relative;
-  animation: fadeInUp 0.8s ease-out 0.6s both;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.hero__notice::before {
-  content: "";
-  position: absolute;
-  top: -12px; /* lift the moving line slightly away from the box */
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--highlight), transparent);
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-/* Contact styling: serif wordmark for premium look */
-.hero__contact {
-  margin: 0.8rem 0;
-  text-align: center;
-}
-
-.hero__contact-link {
-  color: var(--text-primary);
-  text-decoration: none;
-  font-family: "Playfair Display", Georgia, serif;
-  font-weight: 600;
-  font-size: 1.05rem;
-  text-transform: none;
-  letter-spacing: 0.02em;
-  display: inline-block;
-  margin: 0.18rem 0;
-}
-
-.hero__phone {
-  font-size: 1.28rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  display: block;
-  margin-top: 0.35rem;
-}
-
-.hero__contact-link:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
-}
-
-.hero__contact-sep {
-  margin: 0 0.5rem;
-  color: var(--text-secondary);
-}
-
-.hero__address {
-  font-weight: 500;
-  color: var(--text-secondary);
-  margin-top: 1.25rem;
-  display: block;
-  font-size: 0.95rem; /* balanced */
-  letter-spacing: 0.18em;
-}
-
-.hero__notice:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl);
-}
-
-.hero__notice p {
-  margin: 0.5rem 0;
-  font-weight: 400;
-}
-
-.hero__address {
-  font-weight: 600;
-  color: var(--highlight);
-  margin-top: 1rem;
-  display: block;
 }
 
 /* Social Media Section */

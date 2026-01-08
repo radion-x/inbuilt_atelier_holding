@@ -87,6 +87,8 @@ app.post("/api/contact", async (req, res) => {
 
   const subject = `Inbuilt Atelier enquiry from ${name}`;
   const textLines = [
+    `Website Enquiry Form Submission`,
+    `---`,
     `Name: ${name}`,
     `Email: ${email}`,
     phone ? `Phone: ${phone}` : "",
@@ -96,6 +98,8 @@ app.post("/api/contact", async (req, res) => {
   ].filter(Boolean);
 
   const htmlLines = [
+    `<p><strong>Website Enquiry Form Submission</strong></p>`,
+    `<hr style="border: none; border-top: 1px solid #e5e5e5; margin: 1rem 0;">`,
     `<p><strong>Name:</strong> ${name}</p>`,
     `<p><strong>Email:</strong> ${email}</p>`,
     phone ? `<p><strong>Phone:</strong> ${phone}</p>` : "",

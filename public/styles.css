@@ -1045,3 +1045,45 @@ textarea {
     border-width: 2px;
   }
 }
+
+/* Final mobile alignment overrides (must be last to win cascade). */
+@media (max-width: 520px) {
+  .hero__logo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+
+    /* Prevent overflow on small screens (iOS Safari is sensitive here). */
+    font-size: clamp(1.7rem, 10vw, 2.35rem);
+    letter-spacing: clamp(0.1rem, 1.2vw, 0.18rem);
+  }
+
+  .hero__logo-light,
+  .hero__logo-bold {
+    display: inline-block;
+  }
+
+  .hero__logo-bold {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero__logo {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__logo-light,
+  .hero__logo-bold {
+    display: block;
+  }
+}

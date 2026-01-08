@@ -85,7 +85,7 @@ app.post("/api/contact", async (req, res) => {
 
   const { name, email, phone, message } = normalized;
 
-  const subject = `Website enquiry from ${name}`;
+  const subject = `Inbuilt Atelier enquiry from ${name}`;
   const textLines = [
     `Name: ${name}`,
     `Email: ${email}`,
@@ -105,7 +105,7 @@ app.post("/api/contact", async (req, res) => {
 
   try {
     await mailgunClient.messages.create(process.env.MAILGUN_DOMAIN, {
-      from: process.env.MAILGUN_FROM || `Confidental Website <mailgun@${process.env.MAILGUN_DOMAIN}>`,
+      from: process.env.MAILGUN_FROM || `Inbuilt Atelier <inbuilt_atelier@${process.env.MAILGUN_DOMAIN}>`,
       to: process.env.MAILGUN_TO.split(",").map((emailAddress) => emailAddress.trim()),
       subject,
       text: textLines.join("\n"),

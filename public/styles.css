@@ -89,9 +89,137 @@ body::after {
 .hero {
   text-align: center;
   display: grid;
-  gap: clamp(2rem, 4vw, 3rem);
+  gap: clamp(2rem, 4vw, 3.5rem);
   justify-items: center;
   animation: fadeIn 1s ease-out 0.2s both;
+  position: relative;
+  max-width: 100%;
+}
+
+/* Gallery wrapper - contains images with notice card overlaid */
+.hero__gallery {
+  position: relative; /* CRITICAL: creates positioning context for absolute child */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px; /* Tiny gap like the screenshot spine */
+  width: 100vw; /* Full viewport width */
+  max-width: none; /* Remove any constraint */
+  margin-left: calc(-50vw + 50%); /* Break out of parent container */
+  margin-right: calc(-50vw + 50%);
+  padding: 0;
+  overflow: visible; /* Ensure card can overflow if needed */
+  isolation: isolate; /* Create new stacking context */
+}
+
+.hero__figure {
+  overflow: hidden;
+  border-radius: 0;
+  margin: 0;
+  height: min(65vh, 600px); /* Taller images for dramatic effect */
+  background-color: #f0f0f0;
+  position: relative; /* Ensure positioning context */
+  z-index: 1; /* Lower than the card */
+}
+
+.hero__figure img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  z-index: 1;
+}
+
+.hero__figure:hover img {
+  transform: scale(1.03);
+}
+
+/* Position the notice card centered over the gallery */
+.hero__notice {
+  position: absolute !important; /* Force absolute positioning */
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 999 !important; /* Very high to ensure it's on top */
+  width: min(620px, 92%);
+  background: #ffffff;
+  padding: clamp(3rem, 5vw, 4.5rem) clamp(2rem, 5vw, 3rem);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12), 0 5px 15px rgba(0,0,0,0.05);
+  text-align: center;
+  border-radius: 2px;
+  pointer-events: auto;
+  isolation: isolate; /* Create its own stacking context */
+}
+
+/* Decorative label: FOR ENQUIRIES... */
+.hero__notice-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 2rem;
+  font-weight: 500;
+}
+
+.hero__notice::before { display: none; }
+
+/* Contact styling: bold serif for impact */
+.hero__contact {
+  margin: 0.6rem 0;
+  line-height: 1.2;
+}
+
+.hero__contact-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem); /* Larger font */
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
+}
+
+.hero__phone {
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+  margin-top: 0.5rem;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.hero__contact-link:hover {
+  color: var(--text-secondary);
+}
+
+.hero__address {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 2.25rem;
+  display: block;
+  font-size: 0.85rem;
+  line-height: 1.8;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .hero__gallery { 
+    grid-template-columns: 1fr; 
+    gap: 0;
+  }
+  .hero__figure { height: 250px; }
+  
+  /* On mobile, pull the card up to overlap the image seam or sit nicely */
+  .hero__notice { 
+    position: relative;
+    top: -2rem; 
+    left: auto;
+    transform: none;
+    margin: 0 auto;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
 }
 
 .hero__branding {
@@ -149,13 +277,13 @@ body::after {
   line-height: 1.75;
   letter-spacing: clamp(0.18rem, 0.8vw, 0.28rem);
   color: var(--text-secondary);
-  background: var(--surface);
-  padding: clamp(2rem, 4vw, 2.75rem) clamp(2rem, 5vw, 3rem);
-  border-radius: 2px;
-  box-shadow: var(--shadow-lg);
-  max-width: 52ch;
+  background: #ffffff;
+  padding: clamp(3rem, 5vw, 4rem) clamp(2.25rem, 5.25vw, 3.25rem);
+  border-radius: 8px;
+  box-shadow: 0 28px 60px rgba(16, 24, 32, 0.08);
+  max-width: 56ch;
   margin: 0 auto;
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(0, 0, 0, 0.04);
   position: relative;
   animation: fadeInUp 0.8s ease-out 0.6s both;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -164,12 +292,57 @@ body::after {
 .hero__notice::before {
   content: "";
   position: absolute;
-  top: 0;
+  top: -12px; /* lift the moving line slightly away from the box */
   left: 0;
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--highlight), transparent);
   animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Contact styling: serif wordmark for premium look */
+.hero__contact {
+  margin: 0.8rem 0;
+  text-align: center;
+}
+
+.hero__contact-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  display: inline-block;
+  margin: 0.18rem 0;
+}
+
+.hero__phone {
+  font-size: 1.28rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  display: block;
+  margin-top: 0.35rem;
+}
+
+.hero__contact-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+.hero__contact-sep {
+  margin: 0 0.5rem;
+  color: var(--text-secondary);
+}
+
+.hero__address {
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-top: 1.25rem;
+  display: block;
+  font-size: 0.95rem; /* balanced */
+  letter-spacing: 0.18em;
 }
 
 .hero__notice:hover {
@@ -195,31 +368,50 @@ body::after {
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.8s ease-out 0.7s both;
+  padding-top: 1rem;
 }
 
 .social__links {
   display: flex;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
+  gap: clamp(2rem, 6vw, 3.5rem);
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .social__link {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
   text-decoration: none;
   color: var(--text-secondary);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: clamp(1rem, 2.5vw, 1.25rem);
-  border-radius: 2px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  padding: clamp(1.25rem, 2.5vw, 1.5rem);
+  border-radius: 8px;
   background: var(--surface);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  position: relative;
-  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.04);
+  box-shadow: 0 6px 20px rgba(16,24,32,0.06);
+  min-width: 190px;
+  min-height: 110px;
+  overflow: visible;
+}
+
+/* Subtle vertical divider between cards on desktop */
+.social__link:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  bottom: 18%;
+  right: -1.25rem;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,0.06), transparent);
+}
+
+@media (max-width: 767px) {
+  .social__links { gap: 1.25rem; flex-wrap: wrap; }
+  .social__link:not(:last-child)::after { display: none; }
 }
 
 .social__link::before {
@@ -239,10 +431,10 @@ body::after {
 }
 
 .social__link:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-6px);
+  box-shadow: 0 22px 54px rgba(16,24,32,0.12);
   color: var(--highlight);
-  border-color: var(--border);
+  border-color: rgba(0,0,0,0.06);
 }
 
 .social__link:active {
@@ -250,20 +442,20 @@ body::after {
 }
 
 .social__icon {
-  width: clamp(1.5rem, 4vw, 1.75rem);
-  height: clamp(1.5rem, 4vw, 1.75rem);
+  width: clamp(1.6rem, 4vw, 2rem);
+  height: clamp(1.6rem, 4vw, 2rem);
   transition: transform 0.3s ease;
 }
 
 .social__link:hover .social__icon {
-  transform: scale(1.1);
+  transform: scale(1.06);
 }
 
 .social__label {
-  font-size: clamp(0.7rem, 1.5vw, 0.75rem);
+  font-size: 0.78rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.12rem;
+  letter-spacing: 0.14rem;
   transition: letter-spacing 0.3s ease;
 }
 

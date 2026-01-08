@@ -6,5 +6,5 @@ PAYLOAD_LIMIT=1mb
 MAILGUN_API_KEY=your-mailgun-api-key
 MAILGUN_DOMAIN=mg.yourdomain.com
 MAILGUN_TO=info@yourdomain.com
-MAILGUN_FROM=Confidental Cosmetic Dentistry <no-reply@yourdomain.com>
+MAILGUN_FROM=Inbuilt Atelier <no-reply@yourdomain.com>
 # MAILGUN_API_BASE=https://api.mailgun.net # Optional: only override if using EU regions

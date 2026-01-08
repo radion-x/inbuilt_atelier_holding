@@ -1,7 +1,7 @@
 {
-  "name": "confidental-holding",
+  "name": "inbuilt-atelier-holding",
   "version": "1.0.0",
-  "description": "Temporary holding page and contact form for Confidental Cosmetic Dentistry",
+  "description": "Temporary holding page and contact form for Inbuilt Atelier",
   "type": "module",
   "scripts": {
     "dev": "node server.js",

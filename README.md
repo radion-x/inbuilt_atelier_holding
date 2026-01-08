@@ -1,6 +1,6 @@
-# Confidental Holding Page
+# Inbuilt Atelier — Holding Page
 
-Simple Express server that serves the under-construction landing page and forwards contact form submissions to Mailgun.
+Simple Express server that serves the under-construction landing page and forwards contact form submissions to Mailgun for Inbuilt Atelier.
 
 ## Running locally
 
@@ -13,7 +13,7 @@ Simple Express server that serves the under-construction landing page and forwar
    ```bash
    npm run dev
    ```
-4. Visit http://localhost:3000 to verify the page.
+4. Visit http://localhost:4337 to verify the page.
 
 ## Deployment notes (Coolify)
 
@@ -29,7 +29,7 @@ Simple Express server that serves the under-construction landing page and forwar
 {
   "name": "Jane Doe",
   "email": "jane@example.com",
-  "phone": "+61 400 000 000",
+  "phone": "0417431124",
   "message": "I'd like to book a consultation."
 }
 ```

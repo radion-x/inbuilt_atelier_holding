@@ -1,4 +1,4 @@
-# Copilot Instructions for Confidental Holding Site
+# Copilot Instructions for Inbuilt Atelier Holding Site
 
 ## Architecture Overview
 
@@ -41,7 +41,7 @@ Client-side: `script.js` displays server errors in status mount, shows validatio
 
 **No build step required** – edit and refresh:
 1. `npm run dev` starts server with nodemon-style behavior (manual restarts)
-2. Visit `http://localhost:3000` to test form
+2. Visit `http://localhost:4337` to test form
 3. Check `server.log` for runtime issues (if logging added)
 4. Test email delivery with real Mailgun credentials or use console.log for local dev
 
@@ -69,7 +69,7 @@ Single endpoint: `POST /api/contact`
 {
   "name": "Jane Doe",
   "email": "jane@example.com", 
-  "phone": "+61 400 000 000",
+  "phone": "0417431124",
   "message": "I'd like to book a consultation."
 }
 ```
